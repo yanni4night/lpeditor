@@ -7,7 +7,7 @@
         <link rel="stylesheet" href="{{sys.cssurl}}" />
         {% else %}
         <style>
-        {{ sys.css|raw }}
+            <!--# include file="/static/landing/common.css" -->
         </style>
         {% endif %}
         {% if navbar %}
@@ -63,7 +63,7 @@
     <script src="{{sys.jsurl}}"></script>
     {% else %}
     <script>
-     {{ sys.js|raw }}
+        <!--# include file="/static/landing/common.js" -->
     </script>
     {% endif %}
     {% if navbar %}
