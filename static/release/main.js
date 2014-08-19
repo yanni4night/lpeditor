@@ -268,6 +268,18 @@
     });
 
 
+    (function(){
+        var navas = utils.get('Landing_Header').getElementsByTagName('a');
+        for(var i=0,l=navas.length; i<l; i++){
+            var node = navas[i];
+            if((node.href.indexOf('#') !== 0) && !/[\&\?]source\=\d+/i.test(node.href)){
+                node.href += (node.href.indexOf('?') == -1) ? ('?source=' + LP_CONFIG['source']) : ('&source=' + LP_CONFIG['source']);
+            }
+        }
+    })();
+    
+
+
     var STATS_CONFIG = {
         ptype:'landingpage',
         pcode:'new',
