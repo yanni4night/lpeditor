@@ -166,7 +166,7 @@
 
                             <div class="f-f">
                             <label for="newflash-navbar">显示导航栏</label>
-                                <input type="checkbox" id="newflash-navbar" class=""/>
+                                <input type="checkbox" id="newflash-navbar" class="" checked="checked"/>
                             </div>
 
                             <div class="f-f">
