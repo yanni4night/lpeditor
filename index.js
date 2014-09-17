@@ -4,7 +4,7 @@ var request = require('request');
 var swig = require('swig');
 var express = require('express');
 var path=require('path');
-var db = require('../common/utils/db');
+//var db = require('../common/utils/db');
 var index =require('./controllers/index');
 
 var app = express();
@@ -81,6 +81,19 @@ app.get('/static/jump.html' , function(req,res){
     });
 });
 
+app.get('/static/roamjump.html' , function(req,res){
+    var querykey = Object.keys(req.query);
+    var query = [];
+    querykey.forEach(function(item){
+        query.push(item + '=' + req.query[item]);
+    });
+    request({
+        url:'http://wan.sogou.com/static/roamjump.html?' + query.join('&')
+    } , function(err,response,body){
+        res.send(body);
+    });
+});
+
 
 //WTF,it does not work!
 if(process.env.NODE_ENV == 'development'){
@@ -90,7 +103,7 @@ if(process.env.NODE_ENV == 'development'){
 }
 
 
-db.connect(function(){
+//db.connect(function(){
     app.listen(3220);
-});
+//});
 

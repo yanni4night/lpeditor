@@ -15,7 +15,7 @@ define(['editor', 'canvas','setting'], function(Editor, Canvas,Setting) {
     id: 'preview_form',
     target: "_blank",
     method: 'post',
-    action: '/preview'
+    action: '/preview?gpitok=cLNfjivuXYp/MFT4LsqOtMBreljWGFlfpO7dKGc2PYD1THrEagviBQ8i8vNdYzL97B8V9LXaeaaOlrYBYafbUp0Nx2smvIXg/XmVDi3ybtojWjHSk4g19da0L0yp/EnuHuVUlhP3mXbaAD7GAaA7kvqIsmxNVI8e590FtYKjs3FtF65hn6vnH8g2FKvjKAsIvuBtpt0fs0PvlzPiEFODyMYXNh0bJ7gqRTQSmBdbUWhX3tNTJ70QlMqbyKTR+aqc'
   }).css({
     display: 'none'
   }).append(

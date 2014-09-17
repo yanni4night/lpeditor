@@ -26,13 +26,14 @@ define(['local', 'listener','disk'], function(LocalCache, Listener,DiskManager) 
         backgroundColor:'',
         twoInOne:false,//reg&login
         showDialog:true,
-        flashUrl: "http://img.wan.sogou.com/cdn/nav/bg/chan.swf",
+        flashUrl: "http://p7.wan.sogoucdn.com/cdn/flash/2014/08/04/20140804121304_691.swf",
         dialogBgImg: 'http://img.wan.sogou.com/ufo/img/newnav/dialog3/ybg2.png',
         dialogVerticalCenter: true,
         navLinks:[],
         fwidth:1400,
         fheight:700,
-        flashLoading:false
+        flashLoading:false,
+        pcroam:true
     },
     defaultData:{},
     init: function() {
