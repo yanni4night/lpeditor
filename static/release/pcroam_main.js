@@ -68,7 +68,7 @@
                 key = param[0];
                 value = param[1];
 
-                result[key] = value;
+                result[key] = decodeURIComponent(value);
             }
 
             return result;
