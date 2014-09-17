@@ -27,8 +27,8 @@ var dev = process.env.NODE_ENV === 'development';
 var TARGET_URI, ONLINE_URL;
 
 if (dev) {
-  TARGET_URI = 'root@10.136.31.61:/opt/my/';
-  ONLINE_URL = 'http://10.136.31.61/';
+  TARGET_URI = 'root@10.12.143.85:/search/wan/webapp/static/nav/';
+  ONLINE_URL = 'http://10.12.143.85/static/nav/';
 } else {
   TARGET_URI = 'root@10.11.201.212:/search/wan/webapp/static/nav/';
   ONLINE_URL = 'http://wan.sogou.com/static/nav/';

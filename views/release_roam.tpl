@@ -207,7 +207,7 @@
     <script src="{{sys.pcroam_jsurl}}"></script>
     {% else %}
     <script>
-        <!--# include file="/static/landing/common.js" -->
+        <!--# include file="/static/landing/roam_common.js" -->
     </script>
     {% endif %}
     {% if navbar %}
