@@ -52,7 +52,8 @@ define(['dialog', 'disk', 'utils', 'editor', 'canvas'], function(Dialog, DiskMan
       var self = this;
 
       this.m$content.delegate('ul.selectable li', 'click', function(e) {
-        $(this).toggleClass('selected');
+        $(this).parent('ul').find('li').removeClass('selected');
+        $(this).addClass('selected');
       }).on('click', '.add-flash', function(e) {
         e.preventDefault();
         self.m$newFlash.show();
@@ -111,7 +112,7 @@ define(['dialog', 'disk', 'utils', 'editor', 'canvas'], function(Dialog, DiskMan
         var selectedFlashes = self.m$flashList.find('li.selected');
         if(!(selectedDialogs.length*selectedFlashes.length))
         {
-          return self.toast('必须至少选择一个对话框和一个Flash');
+          return self.toast('必须选择一个对话框和一个Flash');
         }
 
         var dialogIds = Array.prototype.slice.call(selectedDialogs).map(function(item) {
