@@ -24,120 +24,6 @@
          {{css|raw}}
          body{background:{{backgroundColor}};}
         </style>
-        <style>
-.fastloginicon {
-    background-image: url(http://p3.wan.sogoucdn.com/cdn/image/2014/09/11/20140911143234_188.png);
-    background-repeat: no-repeat;
-    display: block;
-}
-
-.fastloginicon-sg {
-    width: 16px;
-    height: 16px;
-    background-position: -10px -10px;
-}
-
-.fastloginicon-sgame {
-    width: 18px;
-    height: 17px;
-    background-position: -10px -46px;
-}
-
-.fastloginicon-x {
-    width: 8px;
-    height: 8px;
-    background-position: -10px -83px;
-}
-.fastlogin{
-    width: 334px;
-    height: 377px;
-    position: absolute;
-    top:50%;
-    left: 50%;
-    margin-top: -189px;
-    margin-left: -167px;
-    border:1px solid #ccc;
-    background: #fff;
-    display: none;
-}
-.fastlogin .yahei{
-    font-family:'Microsoft YAHEI',arial,sans-serif;
-}
-.fastlogin .header{
-    width: 100%;
-    background: #e2eefb;
-    height: 31px;
-    position: relative;
-}
-.fastlogin .header .sg{
-    left:9px;
-    position: absolute;
-    top:7px;
-}
-.fastlogin .header .title{
-    height: 100%;
-    color: #4a6985;
-    left: 30px;
-    top:0;
-    position: absolute;
-    font: 12px/31px 'simsun',arial,sans-serif;
-}
-.fastlogin .header .x{
-    position: absolute;
-    right: 14px;
-    top: 9px;
-}
-.fastlogin .content{
-    width: 285px;
-    margin: 28px auto 0;
-    position: relative;
-}
-.fastlogin .content h6{
-    position: relative;
-    display: block;
-    height: 20px;
-}
-.fastlogin .content h6 .sgame{
-    position: absolute;
-    left: 0;
-    top:0;
-}
-.fastlogin .content h6 .title{
-    position: absolute;
-    left: 20px;
-    top:0;
-    font: 14px/20px 'Microsoft YAHEI',arial,sans-serif;
-    font-weight: 700;
-    color: #666;
-}
-.fastlogin .content .desc{
-    font: 12px/1.5 'Microsoft YAHEI',arial,sans-serif;
-    color: #999;
-    margin: 15px 0;
-}
-.fastlogin .content .username{
-    font:14px/2 'Microsoft YAHEI',arial,sans-serif;
-    color:#2d9be0;
-    margin: 15px 0;
-    text-decoration: underline;
-}
-.fastlogin .content .fastloginbtn{
-    background: url(http://p0.wan.sogoucdn.com/cdn/image/2014/09/12/20140912133130_403.jpg) no-repeat;
-    width: 283px;
-    height: 46px;
-    display: block;
-    text-decoration: none;
-    margin-top: 20px;
-}
-.fastlogin .content .otherways{
-    margin-top: 80px;
-    height: 20px;
-    text-align: right;
-}
-.fastlogin .content .otherways .reg{
-    color: #2d9be0;
-}
-        </style>
 
         <script>
          {{sys.pbjs|raw}}
@@ -197,7 +83,7 @@
     {% if sys.debug %}
     <script src="http://passport.ufo.sogou-inc.com/dist/latest/js/passport-core.js"></script>
     {% else %}
-    <script src="http://s.account.sogoucdn.com/u/api/latest/js/passport-core.js"></script>
+    <script src="http://s.account.sogoucdn.com/u/api/0.1.0.140917/js/passport-core.js"></script>
     {% endif %}
     <!--[if IE 6]>
         <script src="http://img.wan.sogou.com/ufo/helper/DD_belatedPNG.js"></script><script>DD_belatedPNG.fix('.daohang-logo, .daohang-icon');</script>
