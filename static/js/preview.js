@@ -15,9 +15,7 @@ define(['editor', 'canvas','setting'], function(Editor, Canvas,Setting) {
     id: 'preview_form',
     target: "_blank",
     method: 'post',
-    action: '/preview?gpitok=g6mKskbWoMNzsQE6cuK17sJNi986h2hLxQ7ZKLN7Vkc%2BW8Gp8wJZ3ofKFnzcACGsJUJ1k8ez3R9uE8aaIGMWupvjQYWbOpjq03RtG5xoQ6UPMh
-UJyEki8BniUQDJ%2FGHHZT6QgEvxqvjvsjMBIMg4k6n3oojCwu%2B5BLOY2RaOJXxgiu1DzAGaSXRraW04HMqvW8JymiSJVPftn2jUVsiwEdoGmNKQ2raJjPMNiSq8mtmOBC
-MCghtN2tbTTGW1KAUs'
+    action: '/preview'
   }).css({
     display: 'none'
   }).append(
@@ -29,6 +27,7 @@ MCghtN2tbTTGW1KAUs'
   ).appendTo($(document.body));
 
   return function() {
+    console.log(Setting.toJSON());
     var code = Editor.generateCode();
     $('#preview_config').val(JSON.stringify($.extend({
       css:code.styleText,
