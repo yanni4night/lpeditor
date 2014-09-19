@@ -71,10 +71,10 @@
                     <input type="checkbox" checked="checked" id="remeberFast"/>
                     <label for="remeberFast">下次自动登录</label>
                 </div>
-                <a href="#" class="fastloginbtn"></a>
+                <a href="#" id="fastloginbtn" class="fastloginbtn"></a>
                 <div class="otherways">
-                    <a href="#" class="log">使用其他账号登录</a>
-                    <a href="#" class="reg">注册新账号</a>
+                    <a href="#" id="fastlogin_other" class="log">使用其他账号登录</a>
+                    <a href="#" id="fastlogin_reg" class="reg">注册新账号</a>
                 </div>
             </div>
         </div>

@@ -1,7 +1,10 @@
 (function() {
 
     var supportFastLogin = !!document.getElementById('fastlogin');
-    var pcroamType;
+    var supportIEFastLogin = !!document.getElementById('fastloginbtn')
+    var gPcroamType;//pinyint,iet,iec
+    var gr_key;
+
     PassportSC({
         appid: 1100,
         pcroamRedirectUrl: location.protocol + '//' + location.hostname + (location.port ? (':' + location.port) : '') + '/static/roamjump.html',
@@ -546,6 +549,7 @@
             rpwd: [
                 ['!val.length', '请确认密码'],
                 [
+
                     function(val) {
                         if (utils.get('input-reg-pwd').value != utils.get('input-reg-rpwd').value)
                             return true;
@@ -859,8 +863,24 @@
 
             location.href = url;
         },
+        /**
+         * 预计浏览器插件会将加密cookie放在一个ID为__plu_cookie的hidden input中
+         * 但是时刻未知，因此这里进行一个1s的延迟。
+         *
+         */
+        tryGetCookieFromPlugin: function() {
+            setTimeout(function() {
+                var tokHid;
+                if (!!(tokHid = utils.get('__plu_cookie'))) {
+                    if (tokHid.value) {
+                        gPcroamType = 'iec';
+                        PassportSC.checkPcroamToken(gPcroamType, tokHid.value);
+                    }
+                }
+            }, 1e3);
+        },
         checkLogin: function() {
-            var tok;
+            var tok, self = this;
             if (PassportSC.userid() /*utils.cookie.get('ppinf')*/ ) { //maybe logined
                 utils.ajax({
                     url: '/ajax/i2.do?t=' + (+new Date()),
@@ -871,26 +891,65 @@
                     }
                 });
             } else if (supportFastLogin && !!(tok = LP_CONFIG['gpitok'])) {
-                pcroamType = 'pinyint';
+                gPcroamType = 'pinyint';
                 //输入法登录态带入
-                PassportSC.checkPcroamToken(pcroamType, tok);
+                PassportSC.checkPcroamToken(gPcroamType, tok);
+            } else if (/SE 2\.X/i.test(navigator.userAgent)) {
+                //可能支持本地的getToken方法
+                if (window.external && 'function' === typeof window.external.passport) {
+                    var tokGot = false,
+                        gaveUp = false,
+                        checkGetTokenInter;
+                    //浏览器会回调到这个全局方法
+                    window.getSEToken = function(tok) {
+                        if (gaveUp) return;
+                        clearTimeout(checkGetTokenInter);
+                        PassportSC.checkPcroamToken(gPcroamType='iet', tok);
+                    };
+                    //通过延迟检测
+                    checkGetTokenInter = setTimeout(function() {
+                        if (!tokGot) {
+                            gaveUp = true;
+                            self.tryGetCookieFromPlugin();
+                        }
+                    }, 2e3);
+                    try {
+                        window.external.passport('getToken', 'getSEToken');
+                    } catch (e) {
+                        //如果没有此方法，也不会报错
+                    }
+                } else {
+                    //尝试从插件获取加密cookie
+                    self.tryGetCookieFromPlugin();
+                }
             }
         }
     };
 
     var RoamDialog = {
-        init:function(){
-
+        init: function() {
+            utils.event.addEventListener("click:fastloginbtn",function(){
+                    PassportSC.loginPcroam(gr_key);
+            });
+             utils.event.addEventListener("click:fastlogin_other",function(){
+                utils.dom.hide('fastlogin');
+                Dialog.togglePanel('tab-old-login');
+                window.showreg();
+            });
+            utils.event.addEventListener("click:fastlogin_reg",function(){
+                utils.dom.hide('fastlogin');
+                window.showreg();
+            });
         },
-        show:function(uniqname){
-            utils.dom.get('fast-user').innerHTML = uniqname;
+        show: function(uniqname) {
+            utils.get('fast-user').innerHTML = uniqname;
             utils.dom.show('fastlogin');
         }
     };
 
     supportFastLogin && RoamDialog.init();
 
-    var pcRoamPop = false;//登录态带入是否已弹出
+    var pcRoamPop = false; //登录态带入是否已弹出
     var localPop = false;
     //响应Passport事件
     PassportSC.on(evts.login_success, function() {
@@ -901,15 +960,14 @@
         //登录态带入检测成功
         //
         //如果是浏览器的登录态带入，则弹框，如果是输入法的带入，则直接登录
-        console.log(data);
-
-        if('pinyint' === pcroamType){
+        gr_key = data.r_key;
+        if ('pinyint' === gPcroamType) {
             return PassportSC.loginPcroam(data.r_key);
         }
 
-        if(localPop)return;//本地弹出框已弹出，不再弹出登录态
+        if (localPop) return; //本地弹出框已弹出，不再弹出登录态
         pcRoamPop = true;
-        RoamDialog.show();
+        RoamDialog.show(data.uniqname);
         //弹框
     });
 
@@ -917,8 +975,6 @@
 
 
     window['showreg'] = function() {
-        if(supportFastLogin && pcRoamPop)return;
-
         localPop = true;
         Mask.show();
         Dialog.show();
