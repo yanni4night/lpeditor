@@ -27,6 +27,7 @@ define(['editor', 'canvas','setting'], function(Editor, Canvas,Setting) {
   ).appendTo($(document.body));
 
   return function() {
+    console.log(Setting.toJSON());
     var code = Editor.generateCode();
     $('#preview_config').val(JSON.stringify($.extend({
       css:code.styleText,
