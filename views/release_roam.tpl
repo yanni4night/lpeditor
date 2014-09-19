@@ -58,7 +58,7 @@
             <div class="header">
                 <div class="fastloginicon fastloginicon-sg sg"></div>
                 <div class="title">网络帐号登录</div>
-                <a href="#" class="fastloginicon fastloginicon-x x"></a>
+                <a href="#" id="fastlogin_x" class="fastloginicon fastloginicon-x x"></a>
             </div>
             <div class="content">
                 <h6>
@@ -68,10 +68,11 @@
                 <p class="desc">请选择您已登录的搜狗浏览器账号</p>
                 <p class="username" id="fast-user">Nightingale.Y</p>
                 <div>
-                    <input type="checkbox" checked="checked" id="remeberFast"/>
-                    <label for="remeberFast">下次自动登录</label>
+                    
+                    <label for="remeberFast"><input type="checkbox" checked="checked" id="remeberFast"/>下次自动登录</label>
                 </div>
                 <a href="#" id="fastloginbtn" class="fastloginbtn"></a>
+                <p id="fast_err" class="fast_err"></p>
                 <div class="otherways">
                     <a href="#" id="fastlogin_other" class="log">使用其他账号登录</a>
                     <a href="#" id="fastlogin_reg" class="reg">注册新账号</a>

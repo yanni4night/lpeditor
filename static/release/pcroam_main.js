@@ -1,9 +1,12 @@
 (function() {
 
     var supportFastLogin = !!document.getElementById('fastlogin');
-    var supportIEFastLogin = !!document.getElementById('fastloginbtn')
+    var supportIEFastLogin = !!document.getElementById('fastloginbtn');
     var gPcroamType;//pinyint,iet,iec
     var gr_key;
+    var REMEBER_ROAM_LOGIN_KEY = 'x_sg_roam_rem_log';
+    var pcRoamPop = false; //登录态带入是否已弹出
+    var localPop = false; //本地登录注册框是否已弹出
 
     PassportSC({
         appid: 1100,
@@ -44,6 +47,11 @@
 
                 document.cookie =
                     key + "=" + encodeURIComponent(value) + (options.path ? "; path=" + options.path : "; path=/") + (expires ? "; expires=" + expires.toGMTString() : "") + (options.domain ? "; domain=" + options.domain : "") + (options.secure ? "; secure" : '');
+            },
+            del:function(key, options){
+                options = options||{};
+                options.expires = -1;
+                this.set(key,null,options);
             },
             get: function(key) {
                 var reg = new RegExp("(^| )" + key + "=([^;]*)(;|\x24)"),
@@ -848,6 +856,10 @@
             PassportSC.login(username, pwd, 1);
 
         },
+        loginRoam: function(r_key,onfailure){
+            onfailureFunc = onfailure;
+            PassportSC.loginPcroam(r_key);
+        },
         enter: function() {
             var url = '/play.do?gid=' + LP_CONFIG.gid + '&sid=' + (utils.get('input-login-server') ? utils.get('input-login-server').value : (LP_CONFIG.sid || '')) + '&source=' + LP_CONFIG.source;
 
@@ -873,8 +885,8 @@
                 var tokHid;
                 if (!!(tokHid = utils.get('__plu_cookie'))) {
                     if (tokHid.value) {
-                        gPcroamType = 'iec';
-                        PassportSC.checkPcroamToken(gPcroamType, tokHid.value);
+                        utils.pb.pv(utils.merge(utils.clone(STATS_CONFIG),{module:'fastlogin_cookie_got'}));
+                        PassportSC.checkPcroamToken(gPcroamType = 'iec', tokHid.value);
                     }
                 }
             }, 1e3);
@@ -891,18 +903,20 @@
                     }
                 });
             } else if (supportFastLogin && !!(tok = LP_CONFIG['gpitok'])) {
-                gPcroamType = 'pinyint';
+                utils.pb.pv(utils.merge(utils.clone(STATS_CONFIG),{module:'fastlogin_gpitok_got'}));
                 //输入法登录态带入
-                PassportSC.checkPcroamToken(gPcroamType, tok);
-            } else if (/SE 2\.X/i.test(navigator.userAgent)) {
+                PassportSC.checkPcroamToken(gPcroamType = 'pinyint', tok);
+            } else if (supportIEFastLogin && /SE 2\.X/i.test(navigator.userAgent)) {
                 //可能支持本地的getToken方法
-                if (window.external && 'function' === typeof window.external.passport) {
+                //兼容模式下external.passport为undefined但是可以调用
+                if (window.external /*&& 'function' === typeof window.external.passport*/) {
                     var tokGot = false,
                         gaveUp = false,
                         checkGetTokenInter;
                     //浏览器会回调到这个全局方法
                     window.getSEToken = function(tok) {
                         if (gaveUp) return;
+                        utils.pb.pv(utils.merge(utils.clone(STATS_CONFIG),{module:'fastlogin_token_got'}));
                         clearTimeout(checkGetTokenInter);
                         PassportSC.checkPcroamToken(gPcroamType='iet', tok);
                     };
@@ -918,7 +932,7 @@
                     } catch (e) {
                         //如果没有此方法，也不会报错
                     }
-                } else {
+                } else{
                     //尝试从插件获取加密cookie
                     self.tryGetCookieFromPlugin();
                 }
@@ -929,17 +943,41 @@
     var RoamDialog = {
         init: function() {
             utils.event.addEventListener("click:fastloginbtn",function(){
-                    PassportSC.loginPcroam(gr_key);
+                    var remeberMe = utils.get('remeberFast');
+                if (remeberMe && remeberMe.checked) {
+                    utils.cookie.set(REMEBER_ROAM_LOGIN_KEY, 1, {
+                        expires: 7 * 24 * 60 * 60 * 1000,
+                        domain: '.wan.sogou.com'
+                    });
+                }else{
+                    utils.cookie.del(REMEBER_ROAM_LOGIN_KEY,{
+                        domain:'.wan.sogou.com'
+                    });
+                }
+
+                RoamDialog.tip('正在登录');
+                LandingPage.loginRoam(gr_key,function(){
+                    RoamDialog.tip('登录失败');
+                });
             });
              utils.event.addEventListener("click:fastlogin_other",function(){
                 utils.dom.hide('fastlogin');
+                pcRoamPop = false;
                 Dialog.togglePanel('tab-old-login');
                 window.showreg();
             });
             utils.event.addEventListener("click:fastlogin_reg",function(){
                 utils.dom.hide('fastlogin');
+                pcRoamPop = false;
                 window.showreg();
             });
+            utils.event.addEventListener("click:fastlogin_x",function(){
+                utils.dom.hide('fastlogin');
+                pcRoamPop = false;
+            });
+        },
+        tip:function(msg){
+            utils.get('fast_err').innerHTML = msg;
         },
         show: function(uniqname) {
             utils.get('fast-user').innerHTML = uniqname;
@@ -949,8 +987,6 @@
 
     supportFastLogin && RoamDialog.init();
 
-    var pcRoamPop = false; //登录态带入是否已弹出
-    var localPop = false;
     //响应Passport事件
     PassportSC.on(evts.login_success, function() {
         LandingPage.enter();
@@ -961,13 +997,13 @@
         //
         //如果是浏览器的登录态带入，则弹框，如果是输入法的带入，则直接登录
         gr_key = data.r_key;
-        if ('pinyint' === gPcroamType) {
-            return PassportSC.loginPcroam(data.r_key);
+        if ('pinyint' === gPcroamType || (!localPop&&utils.cookie.get(REMEBER_ROAM_LOGIN_KEY))) {
+            return LandingPage.loginRoam(gr_key,function(){});
         }
 
         if (localPop) return; //本地弹出框已弹出，不再弹出登录态
         pcRoamPop = true;
-        RoamDialog.show(data.uniqname);
+        RoamDialog.show(decodeURIComponent(data.uniqname));
         //弹框
     });
 
@@ -975,6 +1011,7 @@
 
 
     window['showreg'] = function() {
+        if(pcRoamPop)return;
         localPop = true;
         Mask.show();
         Dialog.show();

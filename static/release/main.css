@@ -131,3 +131,6 @@ a:hover { text-decoration: underline; color: #dc1c09;}
 .fastlogin .content .otherways .reg{
     color: #2d9be0;
 }
+.fastlogin .content .fast_err{
+    margin-top: 10px;
+}
