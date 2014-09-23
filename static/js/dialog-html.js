@@ -168,7 +168,8 @@ define(['dialog', 'disk', 'utils', 'editor', 'canvas'], function(Dialog, DiskMan
               lpid:flash.lpid,
               lpname:flash.lpname,
               css: codes.styleText,
-              html: canvasHTML + codes.innerHtml + '</div></div>'
+              pcroam: +conf.setting.pcroam,
+              html: canvasHTML + codes.innerHtml + '</div></div>'//stupid
             },conf.setting,flash.payload));
             });
 
