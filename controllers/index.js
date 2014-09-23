@@ -88,7 +88,6 @@ var app = {
    */
   release: function(req, res) {
     var pages = JSON.parse(req.body.pages||"");
-    var pcroam = req.body.pcroam|0;
     //pages has to be an array
     if (!Array.isArray(pages)) {
       return res.json({
@@ -149,7 +148,7 @@ var app = {
               return callback();
             }
 
-            return request.post('http://10.12.135.37/api/landpageHtml.do?lpageUrl=' + encodeURIComponent(fileurl + "?fl=" + page.lpid + (pcroam?'&gpbtok=1':'')) + '&lpageFl=' + page.lpid + '&lpageName=' + encodeURIComponent(page.lpname), function(error, response, body) {
+            return request.post('http://10.12.135.37/api/landpageHtml.do?lpageUrl=' + encodeURIComponent(fileurl + "?fl=" + page.lpid + (page.pcroam?'&gpbtok=1':'')) + '&lpageFl=' + page.lpid + '&lpageName=' + encodeURIComponent(page.lpname), function(error, response, body) {
               if (error) {
                 return callback(error);
               }
