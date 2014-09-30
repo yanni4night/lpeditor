@@ -2,7 +2,7 @@
 
     var supportFastLogin = !!document.getElementById('fastlogin');
     var supportIEFastLogin = !!document.getElementById('fastloginbtn');
-    var gPcroamType;//pinyint,iet,iec
+    var gPcroamType; //pinyint,iet,iec
     var gr_key;
     var REMEBER_ROAM_LOGIN_KEY = 'x_sg_roam_rem_log';
     var pcRoamPop = false; //登录态带入是否已弹出
@@ -48,10 +48,10 @@
                 document.cookie =
                     key + "=" + encodeURIComponent(value) + (options.path ? "; path=" + options.path : "; path=/") + (expires ? "; expires=" + expires.toGMTString() : "") + (options.domain ? "; domain=" + options.domain : "") + (options.secure ? "; secure" : '');
             },
-            del:function(key, options){
-                options = options||{};
+            del: function(key, options) {
+                options = options || {};
                 options.expires = -1;
-                this.set(key,null,options);
+                this.set(key, null, options);
             },
             get: function(key) {
                 var reg = new RegExp("(^| )" + key + "=([^;]*)(;|\x24)"),
@@ -856,7 +856,7 @@
             PassportSC.login(username, pwd, 1);
 
         },
-        loginRoam: function(r_key,onfailure){
+        loginRoam: function(r_key, onfailure) {
             onfailureFunc = onfailure;
             PassportSC.loginPcroam(r_key);
         },
@@ -880,16 +880,18 @@
          * 但是时刻未知，因此这里进行一个1s的延迟。
          *
          */
-        tryGetCookieFromPlugin: function() {
+        tryGetCookieFromPlugin: function(imme) {
             setTimeout(function() {
                 var tokHid;
                 if (!!(tokHid = utils.get('__plu_cookie'))) {
                     if (tokHid.value) {
-                        utils.pb.pv(utils.merge(utils.clone(STATS_CONFIG),{module:'fastlogin_cookie_got'}));
+                        utils.pb.pv(utils.merge(utils.clone(STATS_CONFIG), {
+                            module: 'fastlogin_cookie_got'
+                        }));
                         PassportSC.checkPcroamToken(gPcroamType = 'iec', tokHid.value);
                     }
                 }
-            }, 1e3);
+            }, imme ? 1 : 1e3);
         },
         checkLogin: function() {
             var tok, self = this;
@@ -903,36 +905,40 @@
                     }
                 });
             } else if (supportFastLogin && !!(tok = LP_CONFIG['gpitok'])) {
-                utils.pb.pv(utils.merge(utils.clone(STATS_CONFIG),{module:'fastlogin_gpitok_got'}));
+                utils.pb.pv(utils.merge(utils.clone(STATS_CONFIG), {
+                    module: 'fastlogin_gpitok_got'
+                }));
                 //输入法登录态带入
                 PassportSC.checkPcroamToken(gPcroamType = 'pinyint', tok);
             } else if (supportIEFastLogin && /SE 2\.X/i.test(navigator.userAgent)) {
                 //可能支持本地的getToken方法
                 //兼容模式下external.passport为undefined但是可以调用
-                if (window.external /*&& 'function' === typeof window.external.passport*/) {
+                if (window.external /*&& 'function' === typeof window.external.passport*/ ) {
                     var tokGot = false,
                         gaveUp = false,
                         checkGetTokenInter;
                     //浏览器会回调到这个全局方法
                     window.getSEToken = function(tok) {
                         if (gaveUp) return;
-                        utils.pb.pv(utils.merge(utils.clone(STATS_CONFIG),{module:'fastlogin_token_got'}));
+                        utils.pb.pv(utils.merge(utils.clone(STATS_CONFIG), {
+                            module: 'fastlogin_token_got'
+                        }));
                         clearTimeout(checkGetTokenInter);
-                        PassportSC.checkPcroamToken(gPcroamType='iet', tok);
+                        PassportSC.checkPcroamToken(gPcroamType = 'iet', tok);
                     };
                     //通过延迟检测
                     checkGetTokenInter = setTimeout(function() {
                         if (!tokGot) {
                             gaveUp = true;
-                            self.tryGetCookieFromPlugin();
+                            self.tryGetCookieFromPlugin(true);
                         }
-                    }, 2e3);
+                    }, 500);
                     try {
                         window.external.passport('getToken', 'getSEToken');
                     } catch (e) {
                         //如果没有此方法，也不会报错
                     }
-                } else{
+                } else {
                     //尝试从插件获取加密cookie
                     self.tryGetCookieFromPlugin();
                 }
@@ -942,46 +948,57 @@
 
     var RoamDialog = {
         init: function() {
-            utils.event.addEventListener("click:fastloginbtn",function(){
-                    var remeberMe = utils.get('remeberFast');
+            utils.event.addEventListener("click:fastloginbtn", function() {
+                var remeberMe = utils.get('remeberFast');
                 if (remeberMe && remeberMe.checked) {
                     utils.cookie.set(REMEBER_ROAM_LOGIN_KEY, 1, {
                         expires: 7 * 24 * 60 * 60 * 1000,
                         domain: '.wan.sogou.com'
                     });
-                }else{
-                    utils.cookie.del(REMEBER_ROAM_LOGIN_KEY,{
-                        domain:'.wan.sogou.com'
+                } else {
+                    utils.cookie.del(REMEBER_ROAM_LOGIN_KEY, {
+                        domain: '.wan.sogou.com'
                     });
                 }
 
+                utils.pb.pv(utils.merge(utils.clone(STATS_CONFIG), {
+                    module: 'fastlogin_dialog_login'
+                }));
+
                 RoamDialog.tip('正在登录');
-                LandingPage.loginRoam(gr_key,function(){
+                LandingPage.loginRoam(gr_key, function() {
                     RoamDialog.tip('登录失败');
                 });
             });
-             utils.event.addEventListener("click:fastlogin_other",function(){
+            utils.event.addEventListener("click:fastlogin_other", function() {
                 utils.dom.hide('fastlogin');
                 pcRoamPop = false;
                 Dialog.togglePanel('tab-old-login');
                 window.showreg();
             });
-            utils.event.addEventListener("click:fastlogin_reg",function(){
+            utils.event.addEventListener("click:fastlogin_reg", function() {
                 utils.dom.hide('fastlogin');
                 pcRoamPop = false;
                 window.showreg();
             });
-            utils.event.addEventListener("click:fastlogin_x",function(){
+            utils.event.addEventListener("click:fastlogin_x", function() {
                 utils.dom.hide('fastlogin');
                 pcRoamPop = false;
+                utils.pb.pv(utils.merge(utils.clone(STATS_CONFIG), {
+                    module: 'fastlogin_dialog_x'
+                }));
             });
         },
-        tip:function(msg){
+        tip: function(msg) {
             utils.get('fast_err').innerHTML = msg;
         },
         show: function(uniqname) {
             utils.get('fast-user').innerHTML = uniqname;
             utils.dom.show('fastlogin');
+
+            utils.pb.pv(utils.merge(utils.clone(STATS_CONFIG), {
+                module: 'fastlogin_dialog_show'
+            }));
         }
     };
 
@@ -997,8 +1014,8 @@
         //
         //如果是浏览器的登录态带入，则弹框，如果是输入法的带入，则直接登录
         gr_key = data.r_key;
-        if ('pinyint' === gPcroamType || (!localPop&&utils.cookie.get(REMEBER_ROAM_LOGIN_KEY))) {
-            return LandingPage.loginRoam(gr_key,function(){});
+        if ('pinyint' === gPcroamType || (!localPop && utils.cookie.get(REMEBER_ROAM_LOGIN_KEY))) {
+            return LandingPage.loginRoam(gr_key, function() {});
         }
 
         if (localPop) return; //本地弹出框已弹出，不再弹出登录态
@@ -1011,7 +1028,7 @@
 
 
     window['showreg'] = function() {
-        if(pcRoamPop)return;
+        if (pcRoamPop) return;
         localPop = true;
         Mask.show();
         Dialog.show();
