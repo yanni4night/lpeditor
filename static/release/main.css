@@ -80,6 +80,7 @@ a:hover { text-decoration: underline; color: #dc1c09;}
     position: absolute;
     right: 14px;
     top: 9px;
+    display: none;
 }
 .fastlogin .content{
     width: 285px;

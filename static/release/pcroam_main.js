@@ -891,7 +891,7 @@
                         PassportSC.checkPcroamToken(gPcroamType = 'iec', tokHid.value);
                     }
                 }
-            }, imme ? 1 : 1e3);
+            }, 500 + (imme ? 500 : 1e3));
         },
         checkLogin: function() {
             var tok, self = this;
@@ -920,6 +920,7 @@
                     //浏览器会回调到这个全局方法
                     window.getSEToken = function(tok) {
                         if (gaveUp) return;
+                        tokGot = true;
                         utils.pb.pv(utils.merge(utils.clone(STATS_CONFIG), {
                             module: 'fastlogin_token_got'
                         }));
@@ -974,11 +975,17 @@
                 utils.dom.hide('fastlogin');
                 pcRoamPop = false;
                 Dialog.togglePanel('tab-old-login');
+                utils.pb.pv(utils.merge(utils.clone(STATS_CONFIG), {
+                    module: 'fastlogin_login_other'
+                }));
                 window.showreg();
             });
             utils.event.addEventListener("click:fastlogin_reg", function() {
                 utils.dom.hide('fastlogin');
                 pcRoamPop = false;
+                utils.pb.pv(utils.merge(utils.clone(STATS_CONFIG), {
+                    module: 'fastlogin_reg'
+                }));
                 window.showreg();
             });
             utils.event.addEventListener("click:fastlogin_x", function() {
