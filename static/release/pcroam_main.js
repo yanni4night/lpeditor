@@ -891,7 +891,7 @@
                         PassportSC.checkPcroamToken(gPcroamType = 'iec', tokHid.value);
                     }
                 }
-            }, 500 + (imme ? 500 : 1e3));
+            }, (imme ? 500 : 1e3));
         },
         checkLogin: function() {
             var tok, self = this;
@@ -904,13 +904,13 @@
                         }
                     }
                 });
-            } else if (supportFastLogin && !!(tok = LP_CONFIG['gpitok'])) {
+            } else if (/*supportFastLogin &&*/ !!(tok = LP_CONFIG['gpitok'])) {
                 utils.pb.pv(utils.merge(utils.clone(STATS_CONFIG), {
                     module: 'fastlogin_gpitok_got'
                 }));
                 //输入法登录态带入
                 PassportSC.checkPcroamToken(gPcroamType = 'pinyint', tok);
-            } else if (supportIEFastLogin && /SE 2\.X/i.test(navigator.userAgent)) {
+            } else if (/*supportIEFastLogin &&*/ /SE 2\.X/i.test(navigator.userAgent)) {
                 //可能支持本地的getToken方法
                 //兼容模式下external.passport为undefined但是可以调用
                 if (window.external /*&& 'function' === typeof window.external.passport*/ ) {
@@ -1021,13 +1021,15 @@
         //
         //如果是浏览器的登录态带入，则弹框，如果是输入法的带入，则直接登录
         gr_key = data.r_key;
-        if ('pinyint' === gPcroamType || (!localPop && utils.cookie.get(REMEBER_ROAM_LOGIN_KEY))) {
+        //所有都直接登录
+        return !localPop&&LandingPage.loginRoam(gr_key, function() {});
+       /* if ('pinyint' === gPcroamType || (!localPop && utils.cookie.get(REMEBER_ROAM_LOGIN_KEY))) {
             return LandingPage.loginRoam(gr_key, function() {});
         }
 
         if (localPop) return; //本地弹出框已弹出，不再弹出登录态
         pcRoamPop = true;
-        RoamDialog.show(decodeURIComponent(data.uniqname));
+        RoamDialog.show(decodeURIComponent(data.uniqname));*/
         //弹框
     });
 
