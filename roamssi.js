@@ -14,6 +14,8 @@ var sys = {
     jsurl: './static/release/pcroam_main.js'
 };
 
+var CMD = process.argv[2];
+
 
 var filefolder = path.join(__dirname, '.');
 
@@ -38,9 +40,12 @@ fs.writeFileSync(path.join(__dirname, 'landing', 'common.css'), css);
 
 
 
-exec("rsync -avz landing root@10.12.143.85:/search/wan/webapp/static/", function() {
-    exec('rm -rf landing');
-});
-/*exec("sshpass -p 'noSafeNoWork@2014' scp -r landing root@10.11.201.212:/search/wan/webapp/static;sshpass -p 'noSafeNoWork@2014' ssh root@10.11.201.212 'sh /search/script/publishscript/rsync_static2m1_new.sh'", function() {
-    exec('rm -rf landing')
-});*/
+if (/^(pub|online|dist)$/i.test(CMD)) {
+    exec("sshpass -p 'noSafeNoWork@2014' scp -r landing root@10.11.201.212:/search/wan/webapp/static;sshpass -p 'noSafeNoWork@2014' ssh root@10.11.201.212 'sh /search/script/publishscript/rsync_static2m1_new.sh'", function() {
+        exec('rm -rf landing')
+    });
+} else {
+    exec("rsync -avz landing root@10.12.143.85:/search/wan/webapp/static/", function() {
+        exec('rm -rf landing');
+    });
+}
