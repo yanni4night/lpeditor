@@ -45,7 +45,7 @@ if (/^(pub|online|dist)$/i.test(CMD)) {
         exec('rm -rf landing')
     });
 } else {
-    exec("rsync -avz landing root@10.12.143.85:/search/wan/webapp/static/", function() {
+    exec("sshpass -p 'Sogou-RD@2008' rsync -avz landing root@10.12.143.85:/search/wan/webapp/static/", function() {
         exec('rm -rf landing');
     });
 }
