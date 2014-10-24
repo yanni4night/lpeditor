@@ -152,9 +152,9 @@ define(['dialog', 'disk', 'utils', 'editor', 'canvas'], function(Dialog, DiskMan
             codes = Editor.getCodeFromConf(conf.elements);
 
             //新增加的真属性必须在这里修复
-            if(undefined === conf.setting.pcroam){
+            /*if(undefined === conf.setting.pcroam){
               conf.setting.pcroam = true;
-            }
+            }*/
 
             //codes 
             canvasHTML = Canvas.getCanvasHTML(false, {

@@ -32,8 +32,7 @@ define(['local', 'listener','disk'], function(LocalCache, Listener,DiskManager) 
         navLinks:[],
         fwidth:1400,
         fheight:700,
-        flashLoading:false,
-        pcroam:true
+        flashLoading:false
     },
     defaultData:{},
     init: function() {

@@ -12,7 +12,7 @@ exports.compile = function(config , debug , callback){
     var sys={
         cssurl : './static/release/main.css',
         navcssurl : './static/release/nav.css',
-        jsurl : './static/release/main.js',
+      /*  jsurl : './static/release/main.js',*/
         pcroam_jsurl : './static/release/pcroam_main.js',
         navjsurl : './static/release/nav.js',
         flashjsurl: './static/release/flash.js',
@@ -54,7 +54,7 @@ exports.compile = function(config , debug , callback){
         config.css = new cleancss({keepSpecialComments:0,noAdvanced:1}).minify(config.css);
     }
 
-    var html = swig.renderFile( path.join(filefolder , 'views' , (config.pcroam?'release_roam.tpl':'release.tpl')),config);
+    var html = swig.renderFile( path.join(filefolder , 'views' , 'release_roam.tpl',config);
 
     if( !debug ){
         html = minify(html , {
