@@ -74,7 +74,7 @@ exports.compile = function(config, debug, callback) {
         }).minify(config.css);
     }
 
-    var html = swig.renderFile(path.join(filefolder, 'views', 'release_roam.tpl', config));
+    var html = swig.renderFile(path.join(filefolder, 'views', 'release_roam.tpl'), config);
 
     if (!debug) {
         html = minify(html, {
