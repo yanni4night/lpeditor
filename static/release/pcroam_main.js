@@ -1,13 +1,14 @@
 (function() {
 
-    var supportFastLogin = !!document.getElementById('fastlogin');
-    var supportIEFastLogin = !!document.getElementById('fastloginbtn');
+    var supportFastLogin = !!document.getElementById('fastlogin');//直接一键登录，包括那种不需要显示按钮的
+    var supportIEFastLogin = !!document.getElementById('fastloginbtn');//直接显示一键登录按钮
     var gPcroamType; //pinyint,iet,iec
     var gr_key;
     var REMEBER_ROAM_LOGIN_KEY = 'x_sg_roam_rem_log';
     var pcRoamPop = false; //登录态带入是否已弹出
     var localPop = false; //本地登录注册框是否已弹出
-    var pcRoamPopAllowed = true;//是否允许弹出一键登录，不允许则直接登录，允许则需要点击按钮后才会登录
+    var pcRoamPopAllowed = true; //是否允许弹出一键登录，不允许则直接登录，允许则需要点击按钮后才会登录
+    var forbiddenRoamPopSource = /^(0012000000007)$/; //带有此source参数的不需要弹出一键登录
 
     PassportSC({
         appid: 1100,
@@ -285,6 +286,10 @@
     LP_CONFIG['fl'] && utils.cookie.set('fl_cookie', (LP_CONFIG['pos'] ? (LP_CONFIG['fl'] + '|' + LP_CONFIG['pos']) : LP_CONFIG['fl']), {
         domain: '.wan.sogou.com'
     });
+
+    if (forbiddenRoamPopSource.test(LP_CONFIG['source'])) {
+        pcRoamPopAllowed = false;
+    }
 
 
     (function() {
@@ -1022,7 +1027,7 @@
         //
         //如果是浏览器的登录态带入，则弹框，如果是输入法的带入，则直接登录
         gr_key = data.r_key;
-        if ('pinyint' === gPcroamType ||(!pcRoamPopAllowed && !localPop) ||(!localPop && utils.cookie.get(REMEBER_ROAM_LOGIN_KEY))) {
+        if ('pinyint' === gPcroamType || (!pcRoamPopAllowed && !localPop) || (!localPop && utils.cookie.get(REMEBER_ROAM_LOGIN_KEY))) {
             return LandingPage.loginRoam(gr_key, function() {});
         }
 
@@ -1130,7 +1135,6 @@
 
     var script = document.createElement('script');
     script.src = 'http://img.wan.sogou.com/cdn/ufo/landingpage/js/external.js';
-    //script.src = 'static/online/external.js';
     document.body.appendChild(script);
 
 })();
