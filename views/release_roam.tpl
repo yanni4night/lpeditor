@@ -66,7 +66,7 @@
                     <div class="title">搜狗游戏</div>
                 </h6>
                 <p class="desc">请选择您已登录的搜狗浏览器账号</p>
-                <p class="username" id="fast-user">Nightingale.Y</p>
+                <p class="username" id="fast-user"></p>
                 <div>
                     
                     <label for="remeberFast"><input type="checkbox" checked="checked" id="remeberFast"/>下次自动登录</label>
@@ -84,7 +84,7 @@
     {% if sys.debug %}
     <script src="http://passport.ufo.sogou-inc.com/dist/latest/js/passport-core.js"></script>
     {% else %}
-    <script src="http://s.account.sogoucdn.com/u/api/0.1.0.140917/js/passport-core.js"></script>
+    <script src="http://s.account.sogoucdn.com/u/api/0.2.0.141016/js/passport-core.js"></script>
     {% endif %}
     <!--[if IE 6]>
         <script src="http://img.wan.sogou.com/ufo/helper/DD_belatedPNG.js"></script><script>DD_belatedPNG.fix('.daohang-logo, .daohang-icon');</script>
