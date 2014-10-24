@@ -27,14 +27,14 @@ exports.compile = function(config, debug, callback) {
 
 
     var css = fs.readFileSync(path.join(filefolder, config.sys.cssurl));
-    var js = fs.readFileSync(path.join(filefolder, config.sys.jsurl));
+ //   var js = fs.readFileSync(path.join(filefolder, config.sys.jsurl));
     var navcss = fs.readFileSync(path.join(filefolder, config.sys.navcssurl));
     var navjs = fs.readFileSync(path.join(filefolder, config.sys.navjsurl));
     var flashjs = fs.readFileSync(path.join(filefolder, config.sys.flashjsurl));
     var flashloadingjs = fs.readFileSync(path.join(filefolder, config.sys.flashloadingjsurl));
     var pbjs = fs.readFileSync(path.join(filefolder, config.sys.pbjsurl));
     config.sys.css = css.toString();
-    config.sys.js = js.toString();
+   // config.sys.js = js.toString();
     config.sys.navcss = navcss.toString();
     config.sys.navjs = navjs.toString();
     config.sys.pbjs = pbjs.toString();
@@ -47,9 +47,9 @@ exports.compile = function(config, debug, callback) {
     });
 
     if (!debug) {
-        config.sys.js = uglify.minify(config.sys.js, {
+       /* config.sys.js = uglify.minify(config.sys.js, {
             fromString: true
-        }).code;
+        }).code;*/
         config.sys.navjs = uglify.minify(config.sys.navjs, {
             fromString: true
         }).code;
