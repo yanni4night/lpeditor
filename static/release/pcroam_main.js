@@ -859,7 +859,7 @@
             //var now = this;
             onfailureFunc = onfailure;
             //PassportSC.loginHandle(username , pwd, 1 , utils.get('PassWrp') , onfailure , now.enter);
-            PassportSC.login(username, pwd, 1);
+            PassportSC.login(username, pwd,'', 1);
 
         },
         loginRoam: function(r_key, onfailure) {
