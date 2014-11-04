@@ -26,7 +26,7 @@ define(['local', 'listener','disk'], function(LocalCache, Listener,DiskManager) 
         backgroundColor:'',
         twoInOne:false,//reg&login
         showDialog:true,
-        flashUrl: "http://p7.wan.sogoucdn.com/cdn/flash/2014/08/04/20140804121304_691.swf",
+        flashUrl: "http://p7.wan.sogoucdn.com/cdn/flash/2014/11/03/20141103104132_80.swf",
         dialogBgImg: 'http://img.wan.sogou.com/ufo/img/newnav/dialog3/ybg2.png',
         dialogVerticalCenter: true,
         navLinks:[],
