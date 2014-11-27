@@ -902,14 +902,14 @@
         checkLogin: function() {
             var tok, self = this;
             if (PassportSC.userid() /*utils.cookie.get('ppinf')*/ ) { //maybe logined
-                utils.ajax({
-                    url: '/ajax/i2.do?t=' + (+new Date()),
-                    onsuccess: function(data) {
-                        if (data != 'notLogin') {
+                // utils.ajax({
+                //     url: '/ajax/i2.do?t=' + (+new Date()),
+                //     onsuccess: function(data) {
+                //         if (data != 'notLogin') {
                             LandingPage.enter();
-                        }
-                    }
-                });
+                //         }
+                //     }
+                // });
             } else if (!!(tok = LP_CONFIG['gpitok'])) {
                 utils.pb.pv(utils.merge(utils.clone(STATS_CONFIG), {
                     module: 'fastlogin_gpitok_got'
