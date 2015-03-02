@@ -48,4 +48,10 @@ if (/^(pub|online|dist)$/i.test(CMD)) {
     exec("sshpass -p 'Sogou-RD@2008' rsync -avz landing root@10.12.143.85:/search/wan/webapp/static/", function() {
         exec('rm -rf landing');
     });
+    
+    ////test add 198
+    // exec("sshpass -p 'noSafeNoWork@2014' rsync -avz landing root@10.12.16.198:/search/wan/webapp/static/", function() {
+    //     exec('rm -rf landing');
+    // });
+    ////test
 }
