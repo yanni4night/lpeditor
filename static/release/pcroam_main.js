@@ -1,5 +1,5 @@
 (function() {
-alert('123');
+
     var supportFastLogin = !!document.getElementById('fastlogin');//直接一键登录，包括那种不需要显示按钮的
     var supportIEFastLogin = !!document.getElementById('fastloginbtn');//直接显示一键登录按钮
     var gPcroamType; //pinyint,iet,iec
