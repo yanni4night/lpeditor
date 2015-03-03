@@ -16,6 +16,11 @@
         redirectUrl: location.protocol + '//' + location.hostname + (location.port ? (':' + location.port) : '') + '/static/jump.html'
     });
 
+    function kv(key){
+        var _key = new RegExp("[?&]"+key+"=([^&]+)", "g").exec(location.href);
+        if(_key){return _key[1];}else{return false;}
+    }
+
     var utils = {
         get: function(node) {
             return typeof node == 'string' ? document.getElementById(node) : node;
@@ -867,7 +872,15 @@
             PassportSC.loginPcroam(r_key);
         },
         enter: function() {
-            var url = '/play.do?gid=' + LP_CONFIG.gid + '&sid=' + (utils.get('input-login-server') ? utils.get('input-login-server').value : (LP_CONFIG.sid || '')) + '&source=' + LP_CONFIG.source;
+            //检测wanclient参数
+            var _wanclient;
+            if(kv('wanclient')){
+                _wanclient = '&wanclient=' + kv('wanclient');
+            }else{
+                _wanclient = '';
+            }
+
+            var url = '/play.do?gid=' + LP_CONFIG.gid + '&sid=' + (utils.get('input-login-server') ? utils.get('input-login-server').value : (LP_CONFIG.sid || '')) + '&source=' + LP_CONFIG.source + _wanclient;
 
             this.uname && utils.cookie.set('email', encodeURIComponent(this.uname.indexOf('@') != -1 ? this.uname : (this.uname + '@sogou.com')), {
                 expires: 365 * 24 * 60 * 60 * 1000,
