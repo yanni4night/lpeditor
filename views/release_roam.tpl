@@ -80,7 +80,7 @@
             </div>
         </div>
     {%if rememberMe%}
-    <input type="hidden" id="rememberMe" value="1">
+    <input type="hidden" id="saveUser" value="1">
     {%endif%}
     {%if loginDirect%}
     <input type="hidden" id="loginDirect" value="1">

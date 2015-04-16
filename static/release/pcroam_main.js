@@ -763,9 +763,12 @@
         var serverlistinited = false;
 
         if (utils.cookie.get('email')) {
-            utils.get('input-login-user').value = decodeURIComponent(utils.cookie.get('email'));
+            var localUser = decodeURIComponent(utils.cookie.get('email'));
+            utils.get('input-login-user').value = localUser;
+            if(!!utils.get('saveUser')){
+                utils.get('input-reg-user').value = localUser;
+            }
         }
-
 
         function checkitem(target) {
             if (!target.offsetHeight) return true;
