@@ -277,6 +277,7 @@
     var LP_CONFIG = utils.queryToJson(location.search);
 
     LP_CONFIG.lp_type = +document.body.getAttribute('data-type'); //0:normal;1:two in one
+    LP_CONFIG.lp_loginDirect = !!utils.get('loginDirect');
 
 
     var setLPCookies = function(name) {
@@ -494,9 +495,10 @@
                         current_user_type = 'new';
                     } else if (data == 20294) {
                         current_user_type = 'reged';
-                        area.innerHTML = LP_CONFIG['lp_type'] ? '已注册，账号使用者输入密码后可直接进入' : '该邮箱已被注册';
+                        area.innerHTML = LP_CONFIG['lp_type'] ? '已注册，账号使用者输入密码后可直接进入' : LP_CONFIG['lp_loginDirect'] ? '账号填写正确' : '该邮箱已被注册';
                         utils.dom.show(area);
                         LP_CONFIG['lp_type'] && (issuccess = true);
+                        LP_CONFIG['lp_loginDirect'] && (issuccess = true);
                     } else {
                         area.innerHTML = '邮箱检查失败，请稍后再试';
                         utils.dom.show(area);
@@ -700,7 +702,7 @@
                     query['chkcode'] = utils.get('input-reg-captcha').value;
                 }
 
-                var isloginaction = LP_CONFIG['lp_type'] && current_user_type == 'reged';
+                var isloginaction = (LP_CONFIG['lp_type'] || LP_CONFIG['lp_loginDirect']) && current_user_type == 'reged';
 
                 var tip = isloginaction ? '登录中...' : '注册中...';
                 utils.pb.cl(utils.merge(utils.clone(STATS_CONFIG), {

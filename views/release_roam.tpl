@@ -79,8 +79,13 @@
                 </div>
             </div>
         </div>
+    {%if rememberMe%}
+    <input type="hidden" id="rememberMe" value="1">
+    {%endif%}
+    {%if loginDirect%}
+    <input type="hidden" id="loginDirect" value="1">
+    {%endif%}
 
-    </body>
     {% if sys.debug %}
     <script src="http://passport.ufo.sogou-inc.com/dist/latest/js/passport-core.js"></script>
     {% else %}
@@ -89,7 +94,6 @@
     <!--[if IE 6]>
         <script src="http://img.wan.sogou.com/ufo/helper/DD_belatedPNG.js"></script><script>DD_belatedPNG.fix('.daohang-logo, .daohang-icon');</script>
         <![endif]-->
-
     {% if sys.debug %}
     <script src="{{sys.pcroam_jsurl}}"></script>
     {% else %}
@@ -113,5 +117,6 @@
 
      {% endif %}
     </script>
+    </body>
 </html>
 

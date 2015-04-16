@@ -528,7 +528,11 @@ width:30%;
 display:inline-block;
 text-align:right
 }
-
+.dialog .content fieldset .split{
+    height: 1px;
+    background: #ccc;
+    margin: 10px;
+}
 .dialog input[type="text"],.dialog input[type="url"] {
 padding:2px 5px;
 border-radius:5px

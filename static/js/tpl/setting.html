@@ -45,7 +45,18 @@
     <div class="row">
         <span class="tit">登录注册2合1：</span>
         <input type="checkbox" id="twoInOne" name="twoInOne" {%if setting.twoInOne%}checked="checked" {%endif%}/>
-        <span class="tip">需要手动隐藏Tab切换按钮和重复密码框</span>
+        <span class="tip">需要手动隐藏Tab切换按钮和重复密码框<span style="color:#e88">(不得与以下两项同时勾选)</span></span>
+    </div>
+    <div class="split"></div>
+    <div class="row">
+        <span class="tit">记住用户名：</span>
+        <input type="checkbox" id="rememberMe" name="rememberMe" {%if setting.rememberMe%}checked="checked" {%endif%}/>
+        <span class="tip">是否在注册界面记住用户名</span>
+    </div>
+    <div class="row">
+        <span class="tit">注册直接登录：</span>
+        <input type="checkbox" id="loginDirect" name="loginDirect" {%if setting.loginDirect%}checked="checked" {%endif%}/>
+        <span class="tip">在用户名密码正确的情况下直接登录</span>
     </div>
 </fieldset>
 
