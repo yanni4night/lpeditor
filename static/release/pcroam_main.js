@@ -766,7 +766,7 @@
             var localUser = decodeURIComponent(utils.cookie.get('email'));
             utils.get('input-login-user').value = localUser;
             if(!!utils.get('saveUser')){
-                utils.get('input-reg-user').value = localUser;
+                utils.get('input-reg-user').value = localUser.replace('@sogou.com','');
             }
         }
 
