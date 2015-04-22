@@ -706,7 +706,7 @@
 
                 var tip = isloginaction ? '登录中...' : '注册中...';
                 utils.pb.cl(utils.merge(utils.clone(STATS_CONFIG), {
-                    module: isloginaction ? 'reglogin' : 'doreg';
+                    module: isloginaction ? 'reglogin' : 'doreg'
                 }));
                 uigsPB('m2_stat_reg_2_' + LP_CONFIG['source'] + '_' + encodeURIComponent(document.referer) + '_');
 
