@@ -289,6 +289,8 @@
     setLPCookies('gid');
     setLPCookies('mid');
     setLPCookies('source');
+    setLPCookies('yyid'); //yyid存在时存入cookie
+
     LP_CONFIG['fl'] && utils.cookie.set('fl_cookie', (LP_CONFIG['pos'] ? (LP_CONFIG['fl'] + '|' + LP_CONFIG['pos']) : LP_CONFIG['fl']), {
         domain: '.wan.sogou.com'
     });
@@ -296,7 +298,6 @@
     if (forbiddenRoamPopSource.test(LP_CONFIG['source'])) {
         pcRoamPopAllowed = false;
     }
-
 
     (function() {
         if (utils.get('Landing_Header')) {
@@ -309,8 +310,6 @@
             }
         }
     })();
-
-
 
     var STATS_CONFIG = {
         ptype: 'landingpage',
@@ -331,7 +330,6 @@
         cemail: utils.cookie.get('email') || ''
     };
     window['STATS_CONFIG'] = STATS_CONFIG;
-
 
     var Mask = function() {
         var node = utils.get('Mask');
@@ -367,11 +365,8 @@
         };
     }();
 
-
-
     var Dialog = function() {
         var dialog = utils.get('lp-dialog');
-
 
         utils.event.addEventListener('click:close', function() {
             Dialog.hide();
@@ -416,7 +411,6 @@
             window.open(url, '', 'width=' + width + ',height=' + height + '');
 
         });
-
 
         return {
             current_panel: 'tab-new-reg',
@@ -890,6 +884,10 @@
             //alert(ssid);
             //var url = '/play.do?gid=' + LP_CONFIG.gid + '&sid=' + (utils.get('input-login-server') ? utils.get('input-login-server').value : (LP_CONFIG.sid || '')) + '&source=' + LP_CONFIG.source + _wanclient;
             var url = '/preplay.do?gid=' + LP_CONFIG.gid + '&sid=' + ssid + '&source=' + LP_CONFIG.source + _wanclient;
+
+            if(LP_CONFIG['yyid']){ //yyid存在时需代入
+                url += '&yyid=' + LP_CONFIG['yyid']
+            }
             
             this.uname && utils.cookie.set('email', encodeURIComponent(this.uname.indexOf('@') != -1 ? this.uname : (this.uname + '@sogou.com')), {
                 expires: 365 * 24 * 60 * 60 * 1000,
