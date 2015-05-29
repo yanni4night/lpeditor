@@ -289,7 +289,13 @@
     setLPCookies('gid');
     setLPCookies('mid');
     setLPCookies('source');
-    setLPCookies('yyid'); //yyid存在时存入cookie
+
+    if(LP_CONFIG['yyid'] || LP_CONFIG['YYID']){ //YYID存在时存入cookies
+        utils.cookie.set('YYID', (LP_CONFIG['yyid'] || LP_CONFIG['YYID']) , {
+            expires: 365 * 24 * 60 * 60 * 1000,
+            domain: '.wan.sogou.com'
+        });
+    }
 
     LP_CONFIG['fl'] && utils.cookie.set('fl_cookie', (LP_CONFIG['pos'] ? (LP_CONFIG['fl'] + '|' + LP_CONFIG['pos']) : LP_CONFIG['fl']), {
         domain: '.wan.sogou.com'
