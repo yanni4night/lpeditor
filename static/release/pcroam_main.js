@@ -884,10 +884,6 @@
             //alert(ssid);
             //var url = '/play.do?gid=' + LP_CONFIG.gid + '&sid=' + (utils.get('input-login-server') ? utils.get('input-login-server').value : (LP_CONFIG.sid || '')) + '&source=' + LP_CONFIG.source + _wanclient;
             var url = '/preplay.do?gid=' + LP_CONFIG.gid + '&sid=' + ssid + '&source=' + LP_CONFIG.source + _wanclient;
-
-            if(LP_CONFIG['yyid']){ //yyid存在时需代入
-                url += '&yyid=' + LP_CONFIG['yyid']
-            }
             
             this.uname && utils.cookie.set('email', encodeURIComponent(this.uname.indexOf('@') != -1 ? this.uname : (this.uname + '@sogou.com')), {
                 expires: 365 * 24 * 60 * 60 * 1000,
