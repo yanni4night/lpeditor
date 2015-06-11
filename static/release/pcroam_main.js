@@ -289,6 +289,14 @@
     setLPCookies('gid');
     setLPCookies('mid');
     setLPCookies('source');
+
+    if(LP_CONFIG['yyid'] || LP_CONFIG['YYID']){ //YYID存在时存入cookies
+        utils.cookie.set('YYID', (LP_CONFIG['yyid'] || LP_CONFIG['YYID']) , {
+            expires: 365 * 24 * 60 * 60 * 1000,
+            domain: '.wan.sogou.com'
+        });
+    }
+
     LP_CONFIG['fl'] && utils.cookie.set('fl_cookie', (LP_CONFIG['pos'] ? (LP_CONFIG['fl'] + '|' + LP_CONFIG['pos']) : LP_CONFIG['fl']), {
         domain: '.wan.sogou.com'
     });
@@ -296,7 +304,6 @@
     if (forbiddenRoamPopSource.test(LP_CONFIG['source'])) {
         pcRoamPopAllowed = false;
     }
-
 
     (function() {
         if (utils.get('Landing_Header')) {
@@ -309,8 +316,6 @@
             }
         }
     })();
-
-
 
     var STATS_CONFIG = {
         ptype: 'landingpage',
@@ -331,7 +336,6 @@
         cemail: utils.cookie.get('email') || ''
     };
     window['STATS_CONFIG'] = STATS_CONFIG;
-
 
     var Mask = function() {
         var node = utils.get('Mask');
@@ -367,11 +371,8 @@
         };
     }();
 
-
-
     var Dialog = function() {
         var dialog = utils.get('lp-dialog');
-
 
         utils.event.addEventListener('click:close', function() {
             Dialog.hide();
@@ -416,7 +417,6 @@
             window.open(url, '', 'width=' + width + ',height=' + height + '');
 
         });
-
 
         return {
             current_panel: 'tab-new-reg',
