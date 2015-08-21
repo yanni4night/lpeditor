@@ -880,18 +880,19 @@
         },
         enter: function() {
             //检测wanclient参数
-            var _wanclient;
-            if(kv('wanclient')){
-                _wanclient = '&wanclient=' + kv('wanclient');
-            }else{
-                _wanclient = '';
-            }
 
             var ssid=(utils.get('input-login-server') .value? utils.get('input-login-server').value : (LP_CONFIG.sid || 0));
             //alert(ssid);
             //var url = '/play.do?gid=' + LP_CONFIG.gid + '&sid=' + (utils.get('input-login-server') ? utils.get('input-login-server').value : (LP_CONFIG.sid || '')) + '&source=' + LP_CONFIG.source + _wanclient;
-            var url = '/preplay.do?gid=' + LP_CONFIG.gid + '&sid=' + ssid + '&source=' + LP_CONFIG.source + _wanclient;
-            
+            var url = '/preplay.do?gid=' + LP_CONFIG.gid + '&sid=' + ssid;
+            if(LP_CONFIG.source)
+            {
+                url += '&source=' + LP_CONFIG.source;
+            }
+            if(kv('wanclient')){
+                url += '&wanclient=' + kv('wanclient');
+            }
+
             this.uname && utils.cookie.set('email', encodeURIComponent(this.uname.indexOf('@') != -1 ? this.uname : (this.uname + '@sogou.com')), {
                 expires: 365 * 24 * 60 * 60 * 1000,
                 domain: '.wan.sogou.com'
