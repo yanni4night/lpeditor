@@ -12,6 +12,7 @@
 
     PassportSC({
         appid: 1100,
+        domain: location.hostname,
         pcroamRedirectUrl: location.protocol + '//' + location.hostname + (location.port ? (':' + location.port) : '') + '/static/roamjump.html',
         redirectUrl: location.protocol + '//' + location.hostname + (location.port ? (':' + location.port) : '') + '/static/jump.html'
     });
