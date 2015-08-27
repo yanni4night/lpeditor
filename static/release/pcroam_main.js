@@ -12,7 +12,6 @@
 
     PassportSC({
         appid: 1100,
-        domain: location.hostname,
         pcroamRedirectUrl: location.protocol + '//' + location.hostname + (location.port ? (':' + location.port) : '') + '/static/roamjump.html',
         redirectUrl: location.protocol + '//' + location.hostname + (location.port ? (':' + location.port) : '') + '/static/jump.html'
     });
@@ -891,6 +890,9 @@
             }
             if(kv('wanclient')){
                 url += '&wanclient=' + kv('wanclient');
+            }
+            if(kv('sd')){
+                url += '&sd=' + kv('sd');
             }
 
             this.uname && utils.cookie.set('email', encodeURIComponent(this.uname.indexOf('@') != -1 ? this.uname : (this.uname + '@sogou.com')), {
